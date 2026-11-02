@@ -1,0 +1,3 @@
+.pio/
+src/common/secrets.h
+*.bak

@@ -1,0 +1,17 @@
+[Unit]
+Description=fob-api - compact JSON for the ESP8266 homelab fob (read-only)
+After=network-online.target ups-dashboard.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/fob-api/fob_api.py
+Restart=always
+RestartSec=5
+NoNewPrivileges=yes
+ProtectSystem=full
+ProtectHome=yes
+PrivateTmp=yes
+ReadOnlyPaths=/etc/fob-api
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,19 @@
+Two additive edits to /opt/ups-dashboard/static/settings.js.
+
+1. In startReplay(), immediately after the guard, BEFORE the line that
+   monkey-patches window.fetch (so the genuine fetch is used):
+
+     try{fetch("http://192.0.2.2:8788/replay",{cache:"no-store"}).catch(function(){})}catch(e){}
+
+2. In the same function's setInterval callback, so the fob follows the browser's
+   position rather than running its own clock:
+
+     realTimer=setInterval(async()=>{await pollReal();
+       try{realFetch("http://192.0.2.2:8788/replay/pos?i="+i+"&n="+frames.length,
+         {cache:"no-store"}).catch(function(){})}catch(e){}
+       if(i<frames.length-1)i++;if(realTimer===null)window.fetch=realFetch},800);
+
+Then bump settings.html:  settings.js?v=NN  ->  v=NN+1
+
+fob-api sends Access-Control-Allow-Origin:* because the dashboard is on :8787
+and this is :8788 - same host, different port, so the call is cross-origin.

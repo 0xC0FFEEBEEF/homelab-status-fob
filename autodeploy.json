@@ -1,0 +1,12 @@
+{
+ "_about": "Which files each host takes from this repo when master changes. Read by autodeploy (homelab-tools/autodeploy). A file is only overwritten if the host's copy still matches the last deployed version; otherwise it is reported as a conflict. The firmware is not deployed: flash it over USB.",
+ "hosts": {
+  "byteme2": {
+   "files": [
+    {"src": "deploy/fob-api.service", "dest": "/etc/systemd/system/",
+     "on_change": ["systemctl daemon-reload", "systemctl try-restart fob-api.service"]},
+    {"src": "deploy/fob_api.py", "dest": "/opt/fob-api/", "on_change": ["systemctl try-restart fob-api.service"]}
+   ]
+  }
+ }
+}
